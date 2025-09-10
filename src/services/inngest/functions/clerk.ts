@@ -2,17 +2,17 @@ import { env } from "@/data/env/server"
 import { inngest } from "../client"
 import { Webhook } from "svix"
 import { NonRetriableError } from "inngest"
-import { deleteUser, insertUser, updateUser } from "@/app/features/users/db/users"
-import { insertUserNotificationSettings } from "@/app/features/users/db/userNotificationSettings"
-// import {
-//   deleteOrganization,
-//   insertOrganization,
-//   updateOrganization,
-// } from "@/features/organizations/db/organizations"
-// import {
-//   deleteOrganizationUserSettings,
-//   insertOrganizationUserSettings,
-// } from "@/features/organizations/db/organizationUserSettings"
+import { deleteUser, insertUser, updateUser } from "@/features/users/db/users"
+import { insertUserNotificationSettings } from "@/features/users/db/userNotificationSettings"
+import {
+  deleteOrganization,
+  insertOrganization,
+  updateOrganization,
+} from "@/features/organizations/db/organizations"
+import {
+  deleteOrganizationUserSettings,
+  insertOrganizationUserSettings,
+} from "@/features/organizations/db/organizationUserSettings"
 
 function verifyWebhook({
   raw,
@@ -138,17 +138,17 @@ export const clerkCreateOrganization = inngest.createFunction(
       }
     })
 
-    // await step.run("create-organization", async () => {
-    //   const orgData = event.data.data
+    await step.run("create-organization", async () => {
+      const orgData = event.data.data
 
-    //   await insertOrganization({
-    //     id: orgData.id,
-    //     name: orgData.name,
-    //     imageUrl: orgData.image_url,
-    //     createdAt: new Date(orgData.created_at),
-    //     updatedAt: new Date(orgData.updated_at),
-    //   })
-    // })
+      await insertOrganization({
+        id: orgData.id,
+        name: orgData.name,
+        imageUrl: orgData.image_url,
+        createdAt: new Date(orgData.created_at),
+        updatedAt: new Date(orgData.updated_at),
+      })
+    })
   }
 )
 
@@ -167,15 +167,15 @@ export const clerkUpdateOrganization = inngest.createFunction(
       }
     })
 
-    // await step.run("update-organization", async () => {
-    //   const orgData = event.data.data
+    await step.run("update-organization", async () => {
+      const orgData = event.data.data
 
-    //   await updateOrganization(orgData.id, {
-    //     name: orgData.name,
-    //     imageUrl: orgData.image_url,
-    //     updatedAt: new Date(orgData.updated_at),
-    //   })
-    // })
+      await updateOrganization(orgData.id, {
+        name: orgData.name,
+        imageUrl: orgData.image_url,
+        updatedAt: new Date(orgData.updated_at),
+      })
+    })
   }
 )
 
@@ -194,14 +194,14 @@ export const clerkDeleteOrganization = inngest.createFunction(
       }
     })
 
-    // await step.run("delete-organization", async () => {
-    //   const { id } = event.data.data
+    await step.run("delete-organization", async () => {
+      const { id } = event.data.data
 
-    //   if (id == null) {
-    //     throw new NonRetriableError("No id found")
-    //   }
-    //   await deleteOrganization(id)
-    // })
+      if (id == null) {
+        throw new NonRetriableError("No id found")
+      }
+      await deleteOrganization(id)
+    })
   }
 )
 
@@ -226,10 +226,10 @@ export const clerkCreateOrgMembership = inngest.createFunction(
       const userId = event.data.data.public_user_data.user_id
       const orgId = event.data.data.organization.id
 
-      // await insertOrganizationUserSettings({
-      //   userId,
-      //   organizationId: orgId,
-      // })
+      await insertOrganizationUserSettings({
+        userId,
+        organizationId: orgId,
+      })
     })
   }
 )
@@ -255,10 +255,10 @@ export const clerkDeleteOrgMembership = inngest.createFunction(
       const userId = event.data.data.public_user_data.user_id
       const orgId = event.data.data.organization.id
 
-      // await deleteOrganizationUserSettings({
-      //   userId,
-      //   organizationId: orgId,
-      // })
+      await deleteOrganizationUserSettings({
+        userId,
+        organizationId: orgId,
+      })
     })
   }
 )
