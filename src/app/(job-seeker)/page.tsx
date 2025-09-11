@@ -1,4 +1,4 @@
-import { JobListingItems } from "./_shared/JobListingItems"
+// import { JobListingItems } from "./_shared/JobListingItems"
 
 export default function HomePage({
   searchParams,
@@ -7,7 +7,7 @@ export default function HomePage({
 }) {
   return (
     <div className="m-4">
-      <JobListingItems searchParams={searchParams} />
+      {/* <JobListingItems searchParams={searchParams} /> */}
     </div>
   )
 }
