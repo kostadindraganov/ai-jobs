@@ -27,7 +27,7 @@ import {
           <Sidebar collapsible="icon" className="overflow-hidden">
             <SidebarHeader className="flex-row">
               <SidebarTrigger />
-              <span className="text-xl text-nowrap">WDS Jobs</span>
+              <span className="text-xl text-nowrap">AI Jobs</span>
             </SidebarHeader>
             <SidebarContent>{content}</SidebarContent>
             <SignedIn>

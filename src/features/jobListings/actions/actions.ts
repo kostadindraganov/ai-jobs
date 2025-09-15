@@ -26,7 +26,7 @@ import {
   hasReachedMaxFeaturedJobListings,
   hasReachedMaxPublishedJobListings,
 } from "../lib/planfeatureHelpers"
-import { getMatchingJobListings } from "@/services/inngest/ai/getMatchingJobListings"
+// import { getMatchingJobListings } from "@/services/inngest/ai/getMatchingJobListings"
 
 export async function createJobListing(
   unsafeData: z.infer<typeof jobListingSchema>
@@ -35,7 +35,7 @@ export async function createJobListing(
 
   if (
     orgId == null ||
-    !(await hasOrgUserPermission("org:job_listings:create"))
+    !(await hasOrgUserPermission("job_listings:job_listings_create"))
   ) {
     return {
       error: true,
@@ -68,7 +68,7 @@ export async function updateJobListing(
 
   if (
     orgId == null ||
-    !(await hasOrgUserPermission("org:job_listings:update"))
+    !(await hasOrgUserPermission("job_listings:job_listings_update"))
   ) {
     return {
       error: true,
@@ -110,7 +110,7 @@ export async function toggleJobListingStatus(id: string) {
 
   const newStatus = getNextJobListingStatus(jobListing.status)
   if (
-    !(await hasOrgUserPermission("org:job_listings:change_status")) ||
+    !(await hasOrgUserPermission("job_listings:job_listings_change_status")) ||
     (newStatus === "published" && (await hasReachedMaxPublishedJobListings()))
   ) {
     return error
@@ -142,7 +142,7 @@ export async function toggleJobListingFeatured(id: string) {
 
   const newFeaturedStatus = !jobListing.isFeatured
   if (
-    !(await hasOrgUserPermission("org:job_listings:change_status")) ||
+    !(await hasOrgUserPermission("job_listings:job_listings_change_status")) ||
     (newFeaturedStatus && (await hasReachedMaxFeaturedJobListings()))
   ) {
     return error
@@ -166,7 +166,7 @@ export async function deleteJobListing(id: string) {
   const jobListing = await getJobListing(id, orgId)
   if (jobListing == null) return error
 
-  if (!(await hasOrgUserPermission("org:job_listings:delete"))) {
+  if (!(await hasOrgUserPermission("job_listings:job_listings_delete"))) {
     return error
   }
 
@@ -175,45 +175,45 @@ export async function deleteJobListing(id: string) {
   redirect("/employer")
 }
 
-export async function getAiJobListingSearchResults(
-  unsafe: z.infer<typeof jobListingAiSearchSchema>
-): Promise<
-  { error: true; message: string } | { error: false; jobIds: string[] }
-> {
-  const { success, data } = jobListingAiSearchSchema.safeParse(unsafe)
-  if (!success) {
-    return {
-      error: true,
-      message: "There was an error processing your search query",
-    }
-  }
+// export async function getAiJobListingSearchResults(
+//   unsafe: z.infer<typeof jobListingAiSearchSchema>
+// ): Promise<
+//   { error: true; message: string } | { error: false; jobIds: string[] }
+// > {
+//   const { success, data } = jobListingAiSearchSchema.safeParse(unsafe)
+//   if (!success) {
+//     return {
+//       error: true,
+//       message: "There was an error processing your search query",
+//     }
+//   }
 
-  const { userId } = await getCurrentUser()
-  if (userId == null) {
-    return {
-      error: true,
-      message: "You need an account to use AI job search",
-    }
-  }
+//   const { userId } = await getCurrentUser()
+//   if (userId == null) {
+//     return {
+//       error: true,
+//       message: "You need an account to use AI job search",
+//     }
+//   }
 
-  const allListings = await getPublicJobListings()
-  const matchedListings = await getMatchingJobListings(
-    data.query,
-    allListings,
-    {
-      maxNumberOfJobs: 10,
-    }
-  )
+//   const allListings = await getPublicJobListings()
+//   const matchedListings = await getMatchingJobListings(
+//     data.query,
+//     allListings,
+//     {
+//       maxNumberOfJobs: 10,
+//     }
+//   )
 
-  if (matchedListings.length === 0) {
-    return {
-      error: true,
-      message: "No jobs match your search criteria",
-    }
-  }
+//   if (matchedListings.length === 0) {
+//     return {
+//       error: true,
+//       message: "No jobs match your search criteria",
+//     }
+//   }
 
-  return { error: false, jobIds: matchedListings }
-}
+//   return { error: false, jobIds: matchedListings }
+// }
 
 async function getJobListing(id: string, orgId: string) {
   "use cache"

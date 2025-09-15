@@ -1,12 +1,12 @@
 import { auth } from "@clerk/nextjs/server"
 
 type UserPermission =
-  | "org:job_listings:create"
-  | "org:job_listings:update"
-  | "org:job_listings:delete"
-  | "org:job_listings:change_status"
-  | "org:job_listing_applications:change_rating"
-  | "org:job_listing_applications:change_stage"
+  | "job_listings:job_listings_create"
+  | "job_listings:job_listings_update"
+  | "job_listings:job_listings_delete"
+  | "job_listings:job_listings_change_status"
+  | "job_listings_applications:job_listing_applications_change_rating"
+  | "job_listings_applications:job_listing_applications_change_stage"
 
 export async function hasOrgUserPermission(permission: UserPermission) {
   const { has } = await auth()

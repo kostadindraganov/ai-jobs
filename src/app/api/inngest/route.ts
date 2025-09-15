@@ -16,7 +16,7 @@ import {
 //   sendDailyUserJobListingEmail,
 // } from "@/services/inngest/functions/email"
 // import { rankApplication } from "@/services/inngest/functions/jobListingApplication"
-// import { createAiSummaryOfUploadedResume } from "@/services/inngest/functions/resume"
+import { createAiSummaryOfUploadedResume } from "@/services/inngest/functions/resume"
 import { serve } from "inngest/next"
 
 export const { GET, POST, PUT } = serve({
@@ -30,7 +30,7 @@ export const { GET, POST, PUT } = serve({
     clerkDeleteOrganization,
     clerkCreateOrgMembership,
     clerkDeleteOrgMembership,
-    // createAiSummaryOfUploadedResume,
+    createAiSummaryOfUploadedResume,
     // rankApplication,
     // prepareDailyUserJobListingNotifications,
     // sendDailyUserJobListingEmail,
