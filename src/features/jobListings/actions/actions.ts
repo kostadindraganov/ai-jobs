@@ -26,7 +26,7 @@ import {
   hasReachedMaxFeaturedJobListings,
   hasReachedMaxPublishedJobListings,
 } from "../lib/planfeatureHelpers"
-// import { getMatchingJobListings } from "@/services/inngest/ai/getMatchingJobListings"
+import { getMatchingJobListings } from "@/services/inngest/ai/getMatchingJobListings"
 
 export async function createJobListing(
   unsafeData: z.infer<typeof jobListingSchema>
@@ -175,45 +175,45 @@ export async function deleteJobListing(id: string) {
   redirect("/employer")
 }
 
-// export async function getAiJobListingSearchResults(
-//   unsafe: z.infer<typeof jobListingAiSearchSchema>
-// ): Promise<
-//   { error: true; message: string } | { error: false; jobIds: string[] }
-// > {
-//   const { success, data } = jobListingAiSearchSchema.safeParse(unsafe)
-//   if (!success) {
-//     return {
-//       error: true,
-//       message: "There was an error processing your search query",
-//     }
-//   }
+export async function getAiJobListingSearchResults(
+  unsafe: z.infer<typeof jobListingAiSearchSchema>
+): Promise<
+  { error: true; message: string } | { error: false; jobIds: string[] }
+> {
+  const { success, data } = jobListingAiSearchSchema.safeParse(unsafe)
+  if (!success) {
+    return {
+      error: true,
+      message: "There was an error processing your search query",
+    }
+  }
 
-//   const { userId } = await getCurrentUser()
-//   if (userId == null) {
-//     return {
-//       error: true,
-//       message: "You need an account to use AI job search",
-//     }
-//   }
+  const { userId } = await getCurrentUser()
+  if (userId == null) {
+    return {
+      error: true,
+      message: "You need an account to use AI job search",
+    }
+  }
 
-//   const allListings = await getPublicJobListings()
-//   const matchedListings = await getMatchingJobListings(
-//     data.query,
-//     allListings,
-//     {
-//       maxNumberOfJobs: 10,
-//     }
-//   )
+  const allListings = await getPublicJobListings()
+  const matchedListings = await getMatchingJobListings(
+    data.query,
+    allListings,
+    {
+      maxNumberOfJobs: 10,
+    }
+  )
 
-//   if (matchedListings.length === 0) {
-//     return {
-//       error: true,
-//       message: "No jobs match your search criteria",
-//     }
-//   }
+  if (matchedListings.length === 0) {
+    return {
+      error: true,
+      message: "No jobs match your search criteria",
+    }
+  }
 
-//   return { error: false, jobIds: matchedListings }
-// }
+  return { error: false, jobIds: matchedListings }
+}
 
 async function getJobListing(id: string, orgId: string) {
   "use cache"

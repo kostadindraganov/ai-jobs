@@ -89,7 +89,7 @@ export async function updateJobListingApplicationStage(
   }
 
   if (
-    !(await hasOrgUserPermission("org:job_listing_applications:change_stage"))
+    !(await hasOrgUserPermission("job_listings_applications:job_listing_applications_change_stage"))
   ) {
     return {
       error: true,
@@ -144,7 +144,7 @@ export async function updateJobListingApplicationRating(
   }
 
   if (
-    !(await hasOrgUserPermission("org:job_listing_applications:change_rating"))
+    !(await hasOrgUserPermission("job_listings_applications:job_listing_applications_change_rating"))
   ) {
     return {
       error: true,
