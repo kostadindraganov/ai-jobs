@@ -3,10 +3,10 @@ import { updateJobListingApplication } from "@/features/jobListingApplications/d
 import { createAgent, createTool, gemini } from "@inngest/agent-kit"
 import { z } from "zod"
 
+
 const saveApplicantRatingTool = createTool({
   name: "save-applicant-ranking",
-  description:
-    "Saves the applicant's ranking for a specific job listing in the database",
+  description: "Saves the applicant's ranking for a specific job listing in the database",
   parameters: z.object({
     rating: z.number().int().max(5).min(1),
     jobListingId: z.string(),

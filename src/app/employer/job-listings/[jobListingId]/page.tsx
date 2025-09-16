@@ -87,7 +87,7 @@ async function SuspendedPage({ params }: Props) {
         </div>
         <div className="flex items-center gap-2 empty:-mt-4">
           <AsyncIf
-            condition={() => hasOrgUserPermission("org:job_listings:update")}
+            condition={() => hasOrgUserPermission("job_listings:job_listings_update")}
           >
             <Button asChild variant="outline">
               <Link href={`/employer/job-listings/${jobListing.id}/edit`}>
@@ -104,7 +104,7 @@ async function SuspendedPage({ params }: Props) {
             />
           )}
           <AsyncIf
-            condition={() => hasOrgUserPermission("org:job_listings:delete")}
+            condition={() => hasOrgUserPermission("job_listings:job_listings_delete")}
           >
             <ActionButton
               variant="destructive"
@@ -161,7 +161,7 @@ function StatusUpdateButton({
 
   return (
     <AsyncIf
-      condition={() => hasOrgUserPermission("org:job_listings:change_status")}
+      condition={() => hasOrgUserPermission("job_listings:job_listings_change_status")}
     >
       {getNextJobListingStatus(status) === "published" ? (
         <AsyncIf
@@ -203,7 +203,7 @@ function FeaturedToggleButton({
 
   return (
     <AsyncIf
-      condition={() => hasOrgUserPermission("org:job_listings:change_status")}
+      condition={() => hasOrgUserPermission("job_listings:job_listings_change_status")}
     >
       {isFeatured ? (
         button
@@ -312,10 +312,10 @@ async function Applications({ jobListingId }: { jobListingId: string }) {
         ) : null,
       }))}
       canUpdateRating={await hasOrgUserPermission(
-        "org:job_listing_applications:change_rating"
+        "job_listings_applications:job_listing_applications_change_rating"
       )}
       canUpdateStage={await hasOrgUserPermission(
-        "org:job_listing_applications:change_stage"
+        "job_listings_applications:job_listing_applications_change_stage"
       )}
     />
   )
