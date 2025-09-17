@@ -5,6 +5,7 @@
   "overrides": {
     "next": "15.5.1-canary.21"
   },
+  "engines": { "node": "22" },
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
