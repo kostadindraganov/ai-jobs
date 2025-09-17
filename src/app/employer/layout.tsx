@@ -59,7 +59,7 @@ async function LayoutSuspense({ children }: { children: ReactNode }) {
             </AsyncIf>
             <SidebarGroupContent className="group-data-[state=collapsed]:hidden">
               <Suspense>
-                <JobListingMenu orgId={orgId} />
+                {/* <JobListingMenu orgId={orgId} /> */}
               </Suspense>
             </SidebarGroupContent>
           </SidebarGroup>
