@@ -10,6 +10,8 @@ import {
     switch (interval) {
       case "hourly":
         return "Hour"
+      case "monthly":
+        return "Мonth"
       case "yearly":
         return "Year"
       default:
@@ -42,6 +44,8 @@ import {
         return "Mid Level"
       case "senior":
         return "Senior"
+      case "c-level":
+        return "C-level"
       default:
         throw new Error(
           `Unknown experience level: ${experienceLevel satisfies never}`
@@ -57,6 +61,8 @@ import {
         return "Part Time"
       case "internship":
         return "Internship"
+      case "contract":
+        return "Contract"
       default:
         throw new Error(`Unknown job type: ${type satisfies never}`)
     }
@@ -85,6 +91,9 @@ import {
     switch (wageInterval) {
       case "hourly": {
         return `${wageFormatter.format(wage)} / hr`
+      }
+      case "monthly": {
+        return `${wageFormatter.format(wage)} / mo`
       }
       case "yearly": {
         return wageFormatter.format(wage)

@@ -34,7 +34,7 @@ import {
   formatLocationRequirement,
   formatWageInterval,
 } from "../lib/formatters"
-import { StateSelectItems } from "./StateSelectItems"
+import { CountrySelectItems } from "./CountrySelectItems"
 import { MarkdownEditor } from "@/components/markdown/MarkdownEditor"
 import { Button } from "@/components/ui/button"
 import { LoadingSwap } from "@/components/LoadingSwap"
@@ -180,7 +180,7 @@ export function JobListingForm({
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>State</FormLabel>
+                  <FormLabel>Country</FormLabel>
                   <Select
                     value={field.value ?? ""}
                     onValueChange={val =>
@@ -201,7 +201,7 @@ export function JobListingForm({
                           Clear
                         </SelectItem>
                       )}
-                      <StateSelectItems />
+                      <CountrySelectItems />
                     </SelectContent>
                   </Select>
                   <FormMessage />

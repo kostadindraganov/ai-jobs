@@ -33,7 +33,7 @@ import {
   formatJobType,
   formatLocationRequirement,
 } from "../lib/formatters"
-import { StateSelectItems } from "./StateSelectItems"
+import { CountrySelectItems } from "./CountrySelectItems"
 import { Button } from "@/components/ui/button"
 import { LoadingSwap } from "@/components/LoadingSwap"
 import { useSidebar } from "@/components/ui/sidebar"
@@ -154,7 +154,7 @@ export function JobListingFilterForm() {
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>State</FormLabel>
+              <FormLabel>Country</FormLabel>
               <Select value={field.value} onValueChange={field.onChange}>
                 <FormControl>
                   <SelectTrigger className="w-full">
@@ -163,7 +163,7 @@ export function JobListingFilterForm() {
                 </FormControl>
                 <SelectContent>
                   <SelectItem value={ANY_VALUE}>Any</SelectItem>
-                  <StateSelectItems />
+                  <CountrySelectItems />
                 </SelectContent>
               </Select>
               <FormMessage />

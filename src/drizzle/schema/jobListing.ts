@@ -13,7 +13,7 @@ import {
   import { relations } from "drizzle-orm"
   import { JobListingApplicationTable } from "./jobListingApplication"
   
-  export const wageIntervals = ["hourly", "yearly"] as const
+  export const wageIntervals = ["hourly", "monthly", "yearly"] as const
   export type WageInterval = (typeof wageIntervals)[number]
   export const wageIntervalEnum = pgEnum(
     "job_listings_wage_interval",
@@ -27,7 +27,7 @@ import {
     locationRequirements
   )
   
-  export const experienceLevels = ["junior", "mid-level", "senior"] as const
+  export const experienceLevels = ["junior", "mid-level", "senior", "c-level"] as const
   export type ExperienceLevel = (typeof experienceLevels)[number]
   export const experienceLevelEnum = pgEnum(
     "job_listings_experience_level",
@@ -41,7 +41,7 @@ import {
     jobListingStatuses
   )
   
-  export const jobListingTypes = ["internship", "part-time", "full-time"] as const
+  export const jobListingTypes = ["internship", "part-time", "full-time", "contract"] as const
   export type JobListingType = (typeof jobListingTypes)[number]
   export const jobListingTypeEnum = pgEnum("job_listings_type", jobListingTypes)
   
