@@ -26,12 +26,14 @@ import {
   JobListingTable,
   jobListingTypes,
   locationRequirements,
+  wageCurrencyIntervals,
   wageIntervals,
 } from "@/drizzle/schema"
 import {
   formatExperienceLevel,
   formatJobType,
   formatLocationRequirement,
+  formatWageCurrency,
   formatWageInterval,
 } from "../lib/formatters"
 import { CountrySelectItems } from "./CountrySelectItems"
@@ -56,6 +58,7 @@ export function JobListingForm({
     | "type"
     | "wage"
     | "wageInterval"
+    | "wageCurrencyInterval"
     | "city"
     | "locationRequirement"
   >
@@ -69,6 +72,7 @@ export function JobListingForm({
       city: null,
       wage: null,
       wageInterval: "yearly",
+      wageCurrencyInterval: "USD",
       experienceLevel: "junior",
       type: "full-time",
       locationRequirement: "in-office",
@@ -113,12 +117,39 @@ export function JobListingForm({
               <FormItem>
                 <FormLabel>Wage</FormLabel>
                 <div className="flex">
+                <FormField
+                    name="wageCurrencyInterval"
+                    control={form.control}
+                    render={({ field }) => (
+                      <FormItem>
+                        <Select
+                          value={field.value ?? ""}
+                          onValueChange={val => field.onChange(val ?? null)}
+                        >
+                          <FormControl>
+                            <SelectTrigger className="rounded-r-none">
+                              <SelectValue />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {wageCurrencyIntervals.map(interval => (
+                              <SelectItem key={interval} value={interval}>
+                                {formatWageCurrency(interval)}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </FormItem>
+                    )}
+                  />
+
+
                   <FormControl>
                     <Input
                       {...field}
                       type="number"
                       value={field.value ?? ""}
-                      className="rounded-r-none"
+                      className="rounded-r-none rounded-l-none"
                       onChange={e =>
                         field.onChange(
                           isNaN(e.target.valueAsNumber)
@@ -153,12 +184,14 @@ export function JobListingForm({
                       </FormItem>
                     )}
                   />
+               
                 </div>
                 <FormDescription>Optional</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
+          
         </div>
         <div className="grid grid-cols-1 @md:grid-cols-2 gap-x-4 gap-y-6 items-start">
           <div className="grid grid-cols-1 @xs:grid-cols-2 gap-x-2 gap-y-6 items-start">

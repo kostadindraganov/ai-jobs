@@ -48,6 +48,7 @@ export const rankApplication = inngest.createFunction(
           title: true,
           wage: true,
           wageInterval: true,
+          wageCurrencyInterval: true,
           type: true,
         },
       })

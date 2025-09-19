@@ -28,6 +28,7 @@ type JobListing = Pick<
   | "experienceLevel"
   | "wage"
   | "wageInterval"
+  | "wageCurrencyInterval"
   | "locationRequirement"
 > & {
   organizationName: string
@@ -101,8 +102,8 @@ function getBadges(jobListing: JobListing) {
     badges.unshift(formatJobListingLocation(jobListing))
   }
 
-  if (jobListing.wage != null && jobListing.wageInterval != null) {
-    badges.unshift(formatWage(jobListing.wage, jobListing.wageInterval))
+  if (jobListing.wage != null && jobListing.wageInterval != null && jobListing.wageCurrencyInterval != null) {
+    badges.unshift(formatWage(jobListing.wage, jobListing.wageInterval, jobListing.wageCurrencyInterval))
   }
 
   return badges
@@ -116,6 +117,7 @@ DailyJobListingEmail.PreviewProps = {
       title: "Frontend Developer",
       wage: null,
       wageInterval: null,
+      wageCurrencyInterval: "USD",
       experienceLevel: "senior",
       type: "part-time",
       id: crypto.randomUUID(),
@@ -128,6 +130,7 @@ DailyJobListingEmail.PreviewProps = {
       title: "Software Engineer",
       wage: 100000,
       wageInterval: "yearly",
+      wageCurrencyInterval: "USD",
       experienceLevel: "mid-level",
       type: "full-time",
       id: crypto.randomUUID(),

@@ -21,6 +21,7 @@ export function JobListingBadges({
   jobListing: {
     wage,
     wageInterval,
+    wageCurrencyInterval,
     stateAbbreviation,
     city,
     type,
@@ -34,6 +35,7 @@ export function JobListingBadges({
     typeof JobListingTable.$inferSelect,
     | "wage"
     | "wageInterval"
+    | "wageCurrencyInterval"
     | "stateAbbreviation"
     | "city"
     | "type"
@@ -61,11 +63,11 @@ export function JobListingBadges({
           Featured
         </Badge>
       )}
-      {wage != null && wageInterval != null && (
+      {wage != null && wageInterval != null && wageCurrencyInterval != null && (
         <Badge {...badgeProps}>
           <BanknoteIcon />
-          {formatWage(wage, wageInterval)}
-        </Badge>
+          {formatWage(wage, wageInterval, wageCurrencyInterval)}
+        </Badge>    
       )}
       {(stateAbbreviation != null || city != null) && (
         <Badge {...badgeProps}>

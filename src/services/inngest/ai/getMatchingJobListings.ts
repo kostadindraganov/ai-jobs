@@ -4,6 +4,7 @@ import {
   jobListingTypes,
   locationRequirements,
   wageIntervals,
+  wageCurrencyIntervals,
 } from "@/drizzle/schema"
 import { createAgent, gemini } from "@inngest/agent-kit"
 import { z } from "zod"
@@ -15,6 +16,7 @@ const listingSchema = z.object({
   description: z.string(),
   wage: z.number().nullable(),
   wageInterval: z.enum(wageIntervals).nullable(),
+  wageCurrencyInterval: z.enum(wageCurrencyIntervals).nullable(),
   stateAbbreviation: z.string().nullable(),
   city: z.string().nullable(),
   experienceLevel: z.enum(experienceLevels),
@@ -43,6 +45,7 @@ export async function getMatchingJobListings(
             ...listing,
             wage: listing.wage ?? undefined,
             wageInterval: listing.wageInterval ?? undefined,
+            wageCurrencyInterval: listing.wageCurrencyInterval ?? undefined,
             city: listing.city ?? undefined,
             stateAbbreviation: listing.stateAbbreviation ?? undefined,
             locationRequirement: listing.locationRequirement ?? undefined,

@@ -37,6 +37,7 @@ import { CountrySelectItems } from "./CountrySelectItems"
 import { Button } from "@/components/ui/button"
 import { LoadingSwap } from "@/components/LoadingSwap"
 import { useSidebar } from "@/components/ui/sidebar"
+import { X } from "lucide-react"
 
 const ANY_VALUE = "any"
 
@@ -95,9 +96,43 @@ export function JobListingFilterForm() {
     setOpenMobile(false)
   }
 
+  function clearForm() {
+    form.reset({
+      title: "",
+      city: "",
+      locationRequirement: ANY_VALUE,
+      stateAbbreviation: ANY_VALUE,
+      experienceLevel: ANY_VALUE,
+      type: ANY_VALUE,
+    })
+    router.push(pathname)
+    setOpenMobile(false)
+  }
+
+  // Check if any form fields have values (excluding default "any" values)
+  const hasFormValues = form.watch().title || 
+    form.watch().city || 
+    (form.watch().locationRequirement && form.watch().locationRequirement !== ANY_VALUE) ||
+    (form.watch().stateAbbreviation && form.watch().stateAbbreviation !== ANY_VALUE) ||
+    (form.watch().experienceLevel && form.watch().experienceLevel !== ANY_VALUE) ||
+    (form.watch().type && form.watch().type !== ANY_VALUE)
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <div className="relative mb-4">
+        {hasFormValues && (
+          <Button
+            type="button"
+            variant="destructive"
+            size="sm"
+            onClick={clearForm}
+            className="absolute top-0 right-0 h-6 w-6 p-0"
+          >
+            <X className="h-4 w-4" />
+          </Button>
+        )}
+      </div>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           name="title"
           control={form.control}

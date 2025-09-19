@@ -22,6 +22,20 @@
       "when": 1758304305174,
       "tag": "0002_ambitious_deadpool",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1758306159741,
+      "tag": "0003_ambiguous_nico_minoru",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1758307347749,
+      "tag": "0004_kind_spirit",
+      "breakpoints": true
     }
   ]
 }

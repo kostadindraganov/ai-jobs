@@ -28,6 +28,8 @@ import { z } from "zod"
 import { cacheTag } from "next/dist/server/use-cache/cache-tag"
 import { getJobListingGlobalTag } from "@/features/jobListings/db/cache/jobListings"
 import { getOrganizationIdTag } from "@/features/organizations/db/cache/organizations"
+import { TextShimmerWave } from "@/components/ui/motion-primitives/text-shimmer-wave"
+import { TextScramble } from "@/components/ui/motion-primitives/text-scramble"
 
 type Props = {
   searchParams: Promise<Record<string, string | string[]>>
@@ -99,6 +101,7 @@ function JobListingListItem({
     | "city"
     | "wage"
     | "wageInterval"
+    | "wageCurrencyInterval"
     | "experienceLevel"
     | "type"
     | "postedAt"
@@ -132,7 +135,15 @@ function JobListingListItem({
             </AvatarFallback>
           </Avatar>
           <div className="flex flex-col gap-1">
-            <CardTitle className="text-xl">{jobListing.title}</CardTitle>
+            <CardTitle className="text-xl">
+              {jobListing.isFeatured ? 
+              <TextShimmerWave  duration={1.2} zDistance={10} >
+                {jobListing.title}
+                </TextShimmerWave> : 
+                <TextScramble  duration={1.2} >
+                {jobListing.title}
+                </TextScramble>}
+              </CardTitle>
             <CardDescription className="text-base">
               {organization.name}
             </CardDescription>

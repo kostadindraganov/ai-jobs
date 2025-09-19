@@ -3,6 +3,7 @@ import {
     JobListingStatus,
     JobListingType,
     LocationRequirement,
+    WageCurrencyInterval,
     WageInterval,
   } from "@/drizzle/schema"
   
@@ -14,6 +15,17 @@ import {
         return "Мonth"
       case "yearly":
         return "Year"
+      default:
+        throw new Error(`Invalid wage interval: ${interval satisfies never}`)
+    }
+  }
+
+  export function formatWageCurrency(interval: WageCurrencyInterval) {
+    switch (interval) {
+      case "USD":
+        return "USD"
+      case "EUR":
+        return "EUR"
       default:
         throw new Error(`Invalid wage interval: ${interval satisfies never}`)
     }
@@ -81,10 +93,10 @@ import {
     }
   }
   
-  export function formatWage(wage: number, wageInterval: WageInterval) {
+  export function formatWage(wage: number, wageInterval: WageInterval, wageCurrencyInterval: WageCurrencyInterval) {
     const wageFormatter = new Intl.NumberFormat("en-US", {
       style: "currency",
-      currency: "USD",
+      currency: wageCurrencyInterval || "USD",
       minimumFractionDigits: 0,
     })
   

@@ -2,6 +2,7 @@ import {
     experienceLevels,
     jobListingTypes,
     locationRequirements,
+    wageCurrencyIntervals,
     wageIntervals,
   } from "@/drizzle/schema"
   import { z } from "zod"
@@ -15,6 +16,7 @@ import {
       type: z.enum(jobListingTypes),
       wage: z.number().int().positive().min(1).nullable(),
       wageInterval: z.enum(wageIntervals).nullable(),
+      wageCurrencyInterval: z.enum(wageCurrencyIntervals).nullable(),
       stateAbbreviation: z
         .string()
         .transform(val => (val.trim() === "" ? null : val))

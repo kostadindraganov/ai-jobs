@@ -19,6 +19,13 @@ import {
     "job_listings_wage_interval",
     wageIntervals
   )
+
+  export const wageCurrencyIntervals = ["USD", "EUR"] as const
+  export type WageCurrencyInterval = (typeof wageCurrencyIntervals)[number]
+  export const wageCurrencyIntervalEnum = pgEnum(
+    "job_listings_wage_currency_interval",
+    wageCurrencyIntervals
+  )
   
   export const locationRequirements = ["in-office", "hybrid", "remote"] as const
   export type LocationRequirement = (typeof locationRequirements)[number]
@@ -56,6 +63,7 @@ import {
       description: text().notNull(),
       wage: integer(),
       wageInterval: wageIntervalEnum(),
+      wageCurrencyInterval: wageCurrencyIntervalEnum(),
       stateAbbreviation: varchar(),
       city: varchar(),
       isFeatured: boolean().notNull().default(false),

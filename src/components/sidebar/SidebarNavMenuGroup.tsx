@@ -10,6 +10,7 @@ import {
 import { SignedIn, SignedOut } from "@/services/clerk/components/SignInStatus"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { Separator } from "../ui/separator"
 
 export function SidebarNavMenuGroup({
   items,
@@ -27,7 +28,8 @@ export function SidebarNavMenuGroup({
 
   return (
     <SidebarGroup className={className}>
-      <SidebarMenu>
+      <Separator className="mb-4" />
+       <SidebarMenu>
         {items.map(item => {
           const html = (
             <SidebarMenuItem key={item.href}>

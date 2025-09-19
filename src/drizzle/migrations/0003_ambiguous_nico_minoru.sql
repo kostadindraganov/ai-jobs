@@ -1,0 +1,2 @@
+CREATE TYPE "public"."job_listings_wage_currency_interval" AS ENUM('usd', 'EUR');--> statement-breakpoint
+ALTER TABLE "job_listings" ADD COLUMN "wageCurrencyInterval" "job_listings_wage_currency_interval";

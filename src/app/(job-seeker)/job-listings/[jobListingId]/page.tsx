@@ -146,7 +146,7 @@ import {
                   {jobListing.postedAt.toLocaleDateString()}
                 </div>
               )}
-              <Button size="icon" variant="outline" asChild>
+              <Button size="icon" variant="destructive"  asChild >
                 <Link
                   href={`/?${convertSearchParamsToString(await searchParams)}`}
                 >
