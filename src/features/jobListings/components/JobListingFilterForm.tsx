@@ -119,7 +119,7 @@ export function JobListingFilterForm() {
 
   return (
     <Form {...form}>
-      <div className="relative mb-4">
+      <div className="relative mb-3">
         {hasFormValues && (
           <Button
             type="button"

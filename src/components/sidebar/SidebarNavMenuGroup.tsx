@@ -28,7 +28,7 @@ export function SidebarNavMenuGroup({
 
   return (
     <SidebarGroup className={className}>
-      <Separator className="mb-4" />
+      <Separator className="mb-3" />
        <SidebarMenu>
         {items.map(item => {
           const html = (

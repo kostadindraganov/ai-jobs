@@ -11,6 +11,7 @@ import {
   import { SignedIn } from "@/services/clerk/components/SignInStatus"
   import { AppSidebarClient } from "./_AppSidebarClient"
   import { ReactNode } from "react"
+import Link from "next/link"
   
   export function AppSidebar({
     children,
@@ -27,7 +28,9 @@ import {
           <Sidebar collapsible="icon" className="overflow-hidden">
             <SidebarHeader className="flex-row">
               <SidebarTrigger />
-              <span className="text-xl text-nowrap">AI Jobs</span>
+              <Link href="/">
+                <span className="text-xl">AI Jobs</span>
+              </Link>
             </SidebarHeader>
             <SidebarContent>{content}</SidebarContent>
             <SignedIn>
