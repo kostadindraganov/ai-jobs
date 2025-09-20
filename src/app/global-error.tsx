@@ -1,0 +1,54 @@
+"use client"
+
+import { useEffect } from "react"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { AlertTriangle, Home, RefreshCw } from "lucide-react"
+import Link from "next/link"
+
+interface GlobalErrorProps {
+  error: Error & { digest?: string }
+  reset: () => void
+}
+
+export default function GlobalError({ error, reset }: GlobalErrorProps) {
+  useEffect(() => {
+    // Log the error to an error reporting service
+    console.error("Global application error:", error)
+  }, [error])
+
+  return (
+    <html lang="en">
+      <body className="min-h-screen flex items-center justify-center bg-background p-4">
+        <Card className="w-full max-w-md">
+          <CardHeader className="text-center">
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-destructive/10">
+              <AlertTriangle className="h-8 w-8 text-destructive" />
+            </div>
+            <CardTitle className="text-2xl">Something went wrong</CardTitle>
+            <CardDescription>
+              We encountered an unexpected error. Our team has been notified and is working to fix it.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="text-center text-sm text-muted-foreground">
+              Error ID: {error.digest || "Unknown"}
+            </div>
+            <div className="flex flex-col gap-2">
+              <Button key="retry" onClick={reset} className="w-full">
+                <RefreshCw className="mr-2 h-4 w-4" />
+                Try again
+              </Button>
+              <Button key="home" variant="outline" asChild className="w-full">
+                <Link href="/">
+                  <Home className="mr-2 h-4 w-4" />
+                  Go home
+                </Link>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </body>
+    </html>
+  )
+}

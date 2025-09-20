@@ -1,0 +1,4 @@
+# This is a placeholder for the static OG image
+# In production, you should replace this with an actual 1200x630 image
+# The dynamic OG image generator at /og route will handle most cases
+# This file serves as a fallback for cases where the dynamic generator fails

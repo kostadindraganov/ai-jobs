@@ -15,6 +15,7 @@ export const env = createEnv({
     GEMINI_API_KEY: z.string().min(1),
     RESEND_API_KEY: z.string().min(1),
     SERVER_URL: z.string().min(1),
+    GOOGLE_SITE_VERIFICATION: z.string().optional(),
   },
   createFinalSchema: env => {
     return z.object(env).transform(val => {

@@ -6,6 +6,25 @@ import { desc, eq } from "drizzle-orm"
 import { cacheTag } from "next/dist/server/use-cache/cache-tag"
 import { redirect } from "next/navigation"
 import { Suspense } from "react"
+import { generatePageMetadata } from "@/lib/metadata"
+
+export const metadata = generatePageMetadata({
+  title: "Employer Dashboard - Post Jobs and Manage Applications",
+  description: "Post job listings, manage applications, and find the best talent for your organization. Advanced AI-powered candidate matching, streamlined hiring process, and comprehensive analytics.",
+  keywords: [
+    "employer dashboard",
+    "post jobs",
+    "job posting",
+    "hiring platform",
+    "recruitment",
+    "talent acquisition",
+    "job management",
+    "candidate management",
+    "hiring tools",
+    "employer portal"
+  ],
+  path: "/employer",
+})
 
 export default function EmployerHomePage() {
   return (

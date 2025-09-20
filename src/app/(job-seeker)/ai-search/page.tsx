@@ -10,6 +10,25 @@ import {
 import { JobListingAiSearchForm } from "@/features/jobListings/components/JobListingAiSearchForm"
 import { SignUpButton } from "@/services/clerk/components/AuthButtons"
 import { getCurrentUser } from "@/services/clerk/lib/getCurrentAuth"
+import { generatePageMetadata } from "@/lib/metadata"
+
+export const metadata = generatePageMetadata({
+  title: "AI-Powered Job Search - Find Jobs with Artificial Intelligence",
+  description: "Use our advanced AI search to find the perfect job match. Our intelligent algorithm analyzes your preferences and matches you with the best job opportunities. Smart filtering, personalized results, and instant recommendations.",
+  keywords: [
+    "AI job search",
+    "artificial intelligence jobs",
+    "smart job search",
+    "AI-powered job matching",
+    "intelligent job search",
+    "personalized job recommendations",
+    "AI job finder",
+    "machine learning jobs",
+    "tech jobs",
+    "job search AI"
+  ],
+  path: "/ai-search",
+})
 
 export default function AiSearchPage() {
   return (

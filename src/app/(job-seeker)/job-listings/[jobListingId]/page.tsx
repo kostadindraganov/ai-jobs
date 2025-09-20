@@ -46,6 +46,26 @@ import {
   } from "@/components/ui/dialog"
   import { DialogDescription, DialogTitle } from "@radix-ui/react-dialog"
   import { NewJobListingApplicationForm } from "@/features/jobListingApplications/components/NewJobListingApplicationForm"
+  import type { Metadata } from "next"
+  import { generateJobListingMetadata, generateJobListingStructuredData, generateBreadcrumbStructuredData } from "@/lib/seo"
+  
+  export async function generateMetadata({
+    params,
+  }: {
+    params: Promise<{ jobListingId: string }>
+  }): Promise<Metadata> {
+    const { jobListingId } = await params
+    const jobListing = await getJobListing(jobListingId)
+    
+    if (!jobListing) {
+      return {
+        title: "Job Not Found",
+        description: "The requested job listing could not be found.",
+      }
+    }
+    
+    return generateJobListingMetadata(jobListing)
+  }
   
   export default function JobListingPage({
     params,
@@ -113,9 +133,30 @@ import {
       .splice(0, 4)
       .map(word => word[0])
       .join("")
+    
+    const baseUrl = process.env.SERVER_URL || 'https://ai-jobs.com'
+    const jobListingStructuredData = generateJobListingStructuredData(jobListing)
+    const breadcrumbStructuredData = generateBreadcrumbStructuredData([
+      { name: "Home", url: baseUrl },
+      { name: "Job Listings", url: `${baseUrl}/` },
+      { name: jobListing.title, url: `${baseUrl}/job-listings/${jobListing.id}` },
+    ])
   
     return (
-      <div className="space-y-6 @container">
+      <>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(jobListingStructuredData),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(breadcrumbStructuredData),
+          }}
+        />
+        <div className="space-y-6 @container">
         <div className="space-y-4">
           <div className="flex gap-4 items-start">
             <Avatar className="size-14 @max-md:hidden">
@@ -165,7 +206,8 @@ import {
         </div>
   
         <MarkdownRenderer source={jobListing.description} />
-      </div>
+        </div>
+      </>
     )
   }
   
