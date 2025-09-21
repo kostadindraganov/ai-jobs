@@ -22,8 +22,9 @@ import Link from "next/link"
     content: ReactNode
     footerButton: ReactNode
   }) {
+    
     return (
-      <SidebarProvider className="overflow-y-hidden">
+      <SidebarProvider>
         <AppSidebarClient>
           <Sidebar collapsible="icon" className="overflow-hidden">
             <SidebarHeader className="flex-row">

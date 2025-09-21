@@ -11,7 +11,7 @@ export function AppSidebarClient({ children }: { children: ReactNode }) {
   if (isMobile) {
     return (
       <div className="flex flex-col w-full">
-        <div className="p-2 border-b flex items-center justify-between gap-1 w-full">
+        <div className="p-2 border-b flex items-center justify-between gap-1 w-full sticky top-0 bg-background z-10">
           <SidebarTrigger />
           <div className="flex items-center justify-center w-full pr-12">
             <Link href="/">

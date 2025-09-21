@@ -1,3 +1,8 @@
+import { Suspense } from "react"
+import { z } from "zod"
+import { experienceLevels, jobListingTypes, locationRequirements } from "@/drizzle/schema"
+import { getPaginatedJobListings } from "@/features/jobListings/actions/actions"
+import { InfiniteJobListingItems } from "./InfiniteJobListingItems"
 import { Avatar, AvatarImage } from "@/components/ui/avatar"
 import {
   Card,
@@ -6,28 +11,20 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { db } from "@/drizzle/db"
-import {
-  experienceLevels,
-  JobListingTable,
-  jobListingTypes,
-  locationRequirements,
-  OrganizationTable,
-} from "@/drizzle/schema"
 import { convertSearchParamsToString } from "@/lib/convertSearchParamsToString"
 import { cn } from "@/lib/utils"
 import { AvatarFallback } from "@radix-ui/react-avatar"
 import { and, desc, eq, ilike, or, SQL } from "drizzle-orm"
 import Link from "next/link"
-import { Suspense } from "react"
 import { differenceInDays } from "date-fns"
 import { connection } from "next/server"
 import { Badge } from "@/components/ui/badge"
 import { JobListingBadges } from "@/features/jobListings/components/JobListingBadges"
-import { z } from "zod"
 import { cacheTag } from "next/dist/server/use-cache/cache-tag"
 import { getJobListingGlobalTag } from "@/features/jobListings/db/cache/jobListings"
 import { getOrganizationIdTag } from "@/features/organizations/db/cache/organizations"
+import { db } from "@/drizzle/db"
+import { JobListingTable, OrganizationTable } from "@/drizzle/schema"
 
 type Props = {
   searchParams: Promise<Record<string, string | string[]>>
@@ -61,30 +58,46 @@ async function SuspendedComponent({ searchParams, params }: Props) {
   const { success, data } = searchParamsSchema.safeParse(await searchParams)
   const search = success ? data : {}
 
-  const jobListings = await getJobListings(search, jobListingId)
-  if (jobListings.length === 0) {
+  // If we're viewing a specific job listing, use the old approach
+  if (jobListingId) {
+    const jobListings = await getJobListings(search, jobListingId)
+    if (jobListings.length === 0) {
+      return (
+        <div className="text-muted-foreground p-4 text-center text-2xl my-10">
+          No job listings found
+        </div>
+      )
+    }
+
     return (
-      <div className="text-muted-foreground p-4">No job listings found</div>
+      <div className="space-y-4">
+        {jobListings.map(jobListing => (
+          <Link
+            className="block"
+            key={jobListing.id}
+            href={`/job-listings/${jobListing.id}?${convertSearchParamsToString(
+              search
+            )}`}
+          >
+            <JobListingListItem
+              jobListing={jobListing}
+              organization={jobListing.organization}
+            />
+          </Link>
+        ))}
+      </div>
     )
   }
 
+  // For the main job listings page, use infinite scroll
+  const result = await getPaginatedJobListings(search, 1, 10)
+
   return (
-    <div className="space-y-4">
-      {jobListings.map(jobListing => (
-        <Link
-          className="block"
-          key={jobListing.id}
-          href={`/job-listings/${jobListing.id}?${convertSearchParamsToString(
-            search
-          )}`}
-        >
-          <JobListingListItem
-            jobListing={jobListing}
-            organization={jobListing.organization}
-          />
-        </Link>
-      ))}
-    </div>
+    <InfiniteJobListingItems
+      initialSearchParams={search}
+      initialJobListings={result.data}
+      initialPagination={result.pagination}
+    />
   )
 }
 
@@ -171,7 +184,9 @@ async function DaysSincePosting({ postedAt }: { postedAt: Date }) {
   const daysSincePosted = differenceInDays(postedAt, Date.now())
 
   if (daysSincePosted === 0) {
-    return <Badge>New</Badge>
+    return <Badge variant="outline">
+      <span className="text-purple-600 dark:text-yellow-400">New</span>
+    </Badge>
   }
 
   return new Intl.RelativeTimeFormat(undefined, {

@@ -15,6 +15,7 @@ import {
   GraduationCapIcon,
   HourglassIcon,
   MapPinIcon,
+  Star
 } from "lucide-react"
 
 export function JobListingBadges({
@@ -60,7 +61,7 @@ export function JobListingBadges({
             "border-featured bg-featured/50 text-featured-foreground"
           )}
         >
-          Featured
+          <Star />
         </Badge>
       )}
       {wage != null && wageInterval != null && wageCurrencyInterval != null && (
