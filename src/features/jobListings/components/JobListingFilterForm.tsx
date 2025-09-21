@@ -258,10 +258,11 @@ export function JobListingFilterForm() {
         <Button
           disabled={form.formState.isSubmitting}
           type="submit"
-          className="w-full"
+          className="w-full bg-purple-700 text-white hover:text-black focus:text-black"
+          
         >
           <LoadingSwap isLoading={form.formState.isSubmitting}>
-            Filter
+            SEARCH
           </LoadingSwap>
         </Button>
       </form>

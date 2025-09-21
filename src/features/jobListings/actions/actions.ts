@@ -235,3 +235,109 @@ async function getPublicJobListings() {
     where: eq(JobListingTable.status, "published"),
   })
 }
+
+export async function getPaginatedJobListings(
+  searchParams: {
+    title?: string
+    city?: string
+    state?: string
+    experience?: string
+    locationRequirement?: string
+    type?: string
+    jobIds?: string[]
+  },
+  page: number = 1,
+  limit: number = 10
+) {
+  "use cache"
+  
+  const { and, desc, eq, ilike, or, count } = await import("drizzle-orm")
+  const { JobListingTable } = await import("@/drizzle/schema")
+  const { db } = await import("@/drizzle/db")
+  const { cacheTag } = await import("next/dist/server/use-cache/cache-tag")
+  const { getJobListingGlobalTag, getJobListingIdTag } = await import("../db/cache/jobListings")
+
+  cacheTag(getJobListingGlobalTag())
+
+  const whereConditions: (ReturnType<typeof eq> | ReturnType<typeof ilike> | ReturnType<typeof or>)[] = []
+  
+  if (searchParams.title) {
+    whereConditions.push(
+      ilike(JobListingTable.title, `%${searchParams.title}%`)
+    )
+  }
+
+  if (searchParams.locationRequirement) {
+    whereConditions.push(
+      eq(JobListingTable.locationRequirement, searchParams.locationRequirement as "in-office" | "hybrid" | "remote")
+    )
+  }
+
+  if (searchParams.city) {
+    whereConditions.push(ilike(JobListingTable.city, `%${searchParams.city}%`))
+  }
+
+  if (searchParams.state) {
+    whereConditions.push(
+      eq(JobListingTable.stateAbbreviation, searchParams.state)
+    )
+  }
+
+  if (searchParams.experience) {
+    whereConditions.push(
+      eq(JobListingTable.experienceLevel, searchParams.experience as "junior" | "mid-level" | "senior" | "c-level")
+    )
+  }
+
+  if (searchParams.type) {
+    whereConditions.push(eq(JobListingTable.type, searchParams.type as "internship" | "part-time" | "full-time" | "contract"))
+  }
+
+  if (searchParams.jobIds && searchParams.jobIds.length > 0) {
+    whereConditions.push(
+      or(...searchParams.jobIds.map(jobId => eq(JobListingTable.id, jobId)))
+    )
+  }
+
+  const offset = (page - 1) * limit
+
+  const [data, totalCount] = await Promise.all([
+    db.query.JobListingTable.findMany({
+      where: and(eq(JobListingTable.status, "published"), ...whereConditions),
+      with: {
+        organization: {
+          columns: {
+            id: true,
+            name: true,
+            imageUrl: true,
+          },
+        },
+      },
+      orderBy: [desc(JobListingTable.isFeatured), desc(JobListingTable.postedAt)],
+      limit,
+      offset,
+    }),
+    db
+      .select({ count: count() })
+      .from(JobListingTable)
+      .where(and(eq(JobListingTable.status, "published"), ...whereConditions))
+      .then(result => result[0]?.count || 0)
+  ])
+
+  // Cache individual job listings
+  data.forEach((listing) => {
+    cacheTag(getJobListingIdTag(listing.id))
+  })
+
+  return {
+    data,
+    pagination: {
+      page,
+      limit,
+      total: totalCount,
+      totalPages: Math.ceil(totalCount / limit),
+      hasNextPage: page < Math.ceil(totalCount / limit),
+      hasPrevPage: page > 1,
+    }
+  }
+}
